@@ -8,7 +8,7 @@
   <!-- Base rules 3 so they show up in Discover -->
   <!-- Base rules temporarily level 15 for easier debugging -->
   <rule id="100000" level="15">
-    <decoded_as>sophos-fw-xgs126</decoded_as>
+    <decoded_as>sophos-fw-xgs-bechtle</decoded_as>
     <description>Sophos Firewall Event</description>
   </rule>
 
@@ -114,6 +114,30 @@
     <description>HTTP Content Denied: $(url)</description>
   </rule>
 
+  <rule id="102020" level="15">
+    <if_sid>102000</if_sid>
+    <field name="log_component">Application</field>
+    <description>Application Content Filtering Event</description>
+  </rule>
+
+  <rule id="102021" level="3">
+    <if_sid>102020</if_sid>
+    <field name="log_subtype">Denied</field>
+    <description>Application Content Denied: $(application)</description>
+  </rule>
+
+  <rule id="102030" level="15">
+    <if_sid>102000</if_sid>
+    <field name="log_component">SSL</field>
+    <description>SSL Content Filtering Event</description>
+  </rule>
+
+  <rule id="102031" level="3">
+    <if_sid>102030</if_sid>
+    <field name="log_subtype">Do not decrypt</field>
+    <description>SSL Do not decrypt Event</description>
+  </rule>
+
   <rule id="103000" level="15">
     <if_sid>100000</if_sid>
     <field name="log_type">Event</field>
@@ -195,7 +219,7 @@
   <rule id="103062" level="3">
     <if_sid>103060</if_sid>
     <field name="log_subtype">Authentication</field>
-    <description>SSL VPN Authentication: $(user_name) established a $(sophos_fw_status_msg) SSL VPN connection/description>
+    <description>SSL VPN Authentication: $(user_name) established a $(sophos_fw_status_msg) SSL VPN connection</description>
   </rule>
 
   <rule id="103070" level="15">
@@ -412,6 +436,24 @@
     <if_sid>107010</if_sid>
     <field name="log_subtype">Allowed</field>
     <description>Allowed mail "$(subject)" from $(sender) to $(recipient) | $(reason)</description>
+  </rule>
+
+  <rule id="108000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">IDP</field>
+    <description>IDP Event</description>
+  </rule>
+
+  <rule id="108010" level="15">
+    <if_sid>108000</if_sid>
+    <field name="log_component">Signatures</field>
+    <description>IDP Signatures Event</description>
+  </rule>
+
+  <rule id="108011" level="3">
+    <if_sid>108010</if_sid>
+    <field name="log_subtype">Drop</field>
+    <description>IDP Signature dropped: $(message)</description>
   </rule>
 
 </group>
