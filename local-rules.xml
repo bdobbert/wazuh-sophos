@@ -1,0 +1,427 @@
+<!-- Local rules -->
+
+<!-- Modify it at your will. -->
+<!-- Copyright (C) 2015, Wazuh Inc. -->
+
+<group name="fw-sophos,">
+
+  <!-- Base rules 3 so they show up in Discover -->
+  <!-- Base rules temporarily level 15 for easier debugging -->
+  <rule id="100000" level="15">
+    <decoded_as>sophos-fw-xgs126</decoded_as>
+    <description>Sophos Firewall Event</description>
+  </rule>
+
+  <rule id="101000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">Firewall</field>
+    <description>Firewall Event</description>
+  </rule>
+
+  <rule id="101010" level="15">
+    <if_sid>101000</if_sid>
+    <field name="log_component">Firewall Rule</field>
+    <description>Firewall Rule Event</description>
+  </rule>
+
+  <rule id="101011" level="3">
+    <if_sid>101010</if_sid>
+    <field name="log_subtype">Allowed</field>
+    <description>Traffic Allowed: from $(src_ip) to $(dst_ip)</description>
+  </rule>
+
+  <rule id="101012" level="5">
+    <if_sid>101010</if_sid>
+    <field name="log_subtype">Denied</field>
+    <description>Traffic Denied: from $(src_ip) to $(dst_ip)</description>
+  </rule>
+
+  <rule id="101020" level="15">
+    <if_sid>101000</if_sid>
+    <field name="log_component">Appliance Access</field>
+    <description>Appliance Access Event</description>
+  </rule>
+
+  <rule id="101021" level="3">
+    <if_sid>101020</if_sid>
+    <field name="log_subtype">Allowed</field>
+    <description>Appliance Access Allowed: from $(src_ip) to $(dst_ip)</description>
+  </rule>
+
+  <rule id="101022" level="5">
+    <if_sid>101020</if_sid>
+    <field name="log_subtype">Denied</field>
+    <description>Appliance Access Denied: from $(src_ip) to $(dst_ip)</description>
+  </rule>
+
+  <rule id="101030" level="15">
+    <if_sid>101000</if_sid>
+    <field name="log_component">ICMP ERROR MESSAGE</field>
+    <description>ICMP Error Message Event</description>
+  </rule>
+
+  <rule id="101031" level="3">
+    <if_sid>101030</if_sid>
+    <field name="log_subtype">Allowed</field>
+    <description>ICMP Error Message Allowed: from $(src_ip) to $(dst_ip)</description>
+  </rule>
+
+  <rule id="101040" level="15">
+    <if_sid>101000</if_sid>
+    <field name="log_component">Invalid Traffic</field>
+    <description>Invalid Traffic Event</description>
+  </rule>
+
+  <rule id="101041" level="3">
+    <if_sid>101040</if_sid>
+    <field name="log_subtype">Denied</field>
+    <description>Invalid Traffic Denied: from $(src_ip) to $(dst_ip)</description>
+  </rule>
+
+  <rule id="101050" level="15">
+    <if_sid>101000</if_sid>
+    <field name="log_component">IP Spoof</field>
+    <description>IP Spoofing Event</description>
+  </rule>
+
+  <rule id="101051" level="3">
+    <if_sid>101050</if_sid>
+    <field name="log_subtype">Denied</field>
+    <description>IP Spoofing Denied: from $(src_ip) to $(dst_ip)</description>
+  </rule>
+
+  <rule id="102000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">Content Filtering</field>
+    <description>Content Filtering Event</description>
+  </rule>
+
+  <rule id="102010" level="15">
+    <if_sid>102000</if_sid>
+    <field name="log_component">HTTP</field>
+    <description>HTTP Content Filtering Event</description>
+  </rule>
+
+  <rule id="102011" level="3">
+    <if_sid>102010</if_sid>
+    <field name="log_subtype">Allowed</field>
+    <description>HTTP Content Allowed: $(url)</description>
+  </rule>
+
+  <rule id="102012" level="5">
+    <if_sid>102010</if_sid>
+    <field name="log_subtype">Denied</field>
+    <description>HTTP Content Denied: $(url)</description>
+  </rule>
+
+  <rule id="103000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">Event</field>
+    <description>Event</description>
+  </rule>
+
+  <rule id="103010" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">RED</field>
+    <description>RED (Remote Ethernet Device) Event</description>
+  </rule>
+
+  <rule id="103011" level="3">
+    <if_sid>103010</if_sid>
+    <field name="log_subtype">System</field>
+    <description>RED (Remote Ethernet Device) System Event: $(message)</description>
+  </rule>
+
+  <rule id="103020" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">DHCP Server</field>
+    <description>DHCP Event</description>
+  </rule>
+
+  <rule id="103021" level="3">
+    <if_sid>103020</if_sid>
+    <field name="log_subtype">System</field>
+    <description>DHCP System Event: $(message)</description>
+  </rule>
+
+  <rule id="103030" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">Appliance</field>
+    <description>Appliance Event</description>
+  </rule>
+
+  <rule id="103031" level="3">
+    <if_sid>103030</if_sid>
+    <field name="log_subtype">System</field>
+    <description>Appliance System Event: $(message)</description>
+  </rule>
+
+  <rule id="103040" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">IPSec</field>
+    <description>IPSec Event</description>
+  </rule>
+
+  <rule id="103041" level="3">
+    <if_sid>103040</if_sid>
+    <field name="log_subtype">System</field>
+    <description>IPSec System Event: $(message)</description>
+  </rule>
+
+  <rule id="103050" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">Anti-Virus</field>
+    <description>Anti-Virus Event</description>
+  </rule>
+
+  <rule id="103051" level="3">
+    <if_sid>103050</if_sid>
+    <field name="log_subtype">System</field>
+    <description>Antivirus System Event: $(message)</description>
+  </rule>
+
+  <rule id="103060" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">SSL VPN</field>
+    <description>SSL VPN Event</description>
+  </rule>
+
+  <rule id="103061" level="3">
+    <if_sid>103060</if_sid>
+    <field name="log_subtype">System</field>
+    <description>SSL VPN System Event: $(message)</description>
+  </rule>
+
+  <rule id="103062" level="3">
+    <if_sid>103060</if_sid>
+    <field name="log_subtype">Authentication</field>
+    <description>SSL VPN Authentication: $(user_name) established a $(sophos_fw_status_msg) SSL VPN connection/description>
+  </rule>
+
+  <rule id="103070" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">Gateway</field>
+    <description>Gateway Event</description>
+  </rule>
+
+  <rule id="103071" level="3">
+    <if_sid>103070</if_sid>
+    <field name="log_subtype">System</field>
+    <description>Gateway System Event: $(message)</description>
+  </rule>
+
+  <rule id="103080" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">Interface</field>
+    <description>Interface Event</description>
+  </rule>
+
+  <rule id="103081" level="3">
+    <if_sid>103080</if_sid>
+    <field name="log_subtype">System</field>
+    <description>Interface System Event: $(message)</description>
+  </rule>
+
+  <rule id="103090" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">IPS</field>
+    <description>IPS Event</description>
+  </rule>
+
+  <rule id="103091" level="15">
+    <if_sid>103090</if_sid>
+    <field name="log_subtype">System</field>
+    <description>IPS System Event: $(message)</description>
+  </rule>
+
+  <rule id="103100" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">VPN Portal Authentication</field>
+    <description>VPN Authentication Event</description>
+  </rule>
+
+  <rule id="103101" level="5">
+    <if_sid>103100</if_sid>
+    <field name="sophos_fw_status_msg">Failed</field>
+    <description>VPN Authentication failed for User $(user_name)</description>
+  </rule>
+
+  <rule id="103110" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">Firewall Authentication</field>
+    <description>Firewall Authentication Event</description>
+  </rule>
+
+  <rule id="103111" level="3">
+    <if_sid>103110</if_sid>
+    <field name="log_subtype">Authentication</field>
+    <description>$(sophos_fw_status_msg) authentication from user $(user_name)</description>
+  </rule>
+
+  <rule id="103120" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">Central Firewall UI</field>
+    <description>Central Firewall UI Event</description>
+  </rule>
+
+  <rule id="103121" level="3">
+    <if_sid>103120</if_sid>
+    <field name="log_subtype">Admin</field>
+    <description>Central Firewall UI Event: $(message)</description>
+  </rule>
+
+  <rule id="103130" level="15">
+    <if_sid>103000</if_sid>
+    <field name="log_component">GUI</field>
+    <description>GUI Event</description>
+  </rule>
+
+  <rule id="103131" level="3">
+    <if_sid>103130</if_sid>
+    <field name="log_subtype">Admin</field>
+    <description>Admin GUI Event: $(message)</description>
+  </rule>
+
+  <rule id="104000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">System Health</field>
+    <description>System Health Event</description>
+  </rule>
+
+  <rule id="104010" level="15">
+    <if_sid>104000</if_sid>
+    <field name="log_component">SSL</field>
+    <description>System Health SSL Event</description>
+  </rule>
+
+  <rule id="104011" level="3">
+    <if_sid>104010</if_sid>
+    <field name="log_subtype">Usage</field>
+    <description>SSL Usage Report: Non-SSL-Count: $(non_ssl_count), SSL-Count: $(ssl_count), Decrypted-Count: $(decrypted_count)</description>
+  </rule>
+
+  <rule id="104020" level="15">
+    <if_sid>104000</if_sid>
+    <field name="log_component">Live User</field>
+    <description>System Health Live User Event</description>
+  </rule>
+
+  <rule id="104021" level="3">
+    <if_sid>104020</if_sid>
+    <field name="log_subtype">Usage</field>
+    <description>Live User Report: $(users) live users</description>
+  </rule>
+
+  <rule id="104030" level="15">
+    <if_sid>104000</if_sid>
+    <field name="log_component">Disk</field>
+    <description>System Health Disk Event</description>
+  </rule>
+
+  <rule id="104031" level="3">
+    <if_sid>104030</if_sid>
+    <field name="log_subtype">Usage</field>
+    <description>Disk Usage Report: Configuration: $(disk_usage_configuration), Reports: $(disk_usage_reports), Signature: $(disk_usage_signature), Temp: $(disk_usage_temp)</description>
+  </rule>
+
+  <rule id="104040" level="15">
+    <if_sid>104000</if_sid>
+    <field name="log_component">Interface</field>
+    <description>System Health Interface Event</description>
+  </rule>
+
+  <rule id="104041" level="3">
+    <if_sid>104040</if_sid>
+    <field name="log_subtype">Usage</field>
+    <description>Interface $(interface) Usage Report: received $(receivedkbytes) kB, $(receivederrors) errors, $(receiveddrops) drops; transmitted $(transmittedkbytes) kB, $(transmittederrors) errors, $(transmitteddrops) drops; $(collisions) collisions</description>
+  </rule>
+
+   <rule id="104050" level="15">
+    <if_sid>104000</if_sid>
+    <field name="log_component">Memory</field>
+    <description>System Health Memory Event</description>
+  </rule>
+
+  <rule id="104051" level="3">
+    <if_sid>104050</if_sid>
+    <field name="log_subtype">Usage</field>
+    <description>Memory Usage Report: Total: $(total_memory) $(unit), Used: $(used_memory) $(unit), Free: $(free_memory) $(unit)</description>
+  </rule>
+
+  <rule id="104060" level="15">
+    <if_sid>104000</if_sid>
+    <field name="log_component">CPU</field>
+    <description>System Health CPU Event</description>
+  </rule>
+
+  <rule id="104061" level="3">
+    <if_sid>104060</if_sid>
+    <field name="log_subtype">Usage</field>
+    <description>CPU Usage Report: System: $(system_cpu_usage), User: $(user_cpu_usage), Idle: $(idle_cpu)</description>
+  </rule>
+
+  <rule id="105000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">WAF</field>
+    <description>WAF Event</description>
+  </rule>
+
+  <rule id="105010" level="15">
+    <if_sid>105000</if_sid>
+    <field name="log_component">Web Application Firewall</field>
+    <description>Web Application Firewall Event</description>
+  </rule>
+
+  <rule id="105011" level="3">
+    <if_sid>105010</if_sid>
+    <field name="sophos_fw_severity_msg">Information</field>
+    <description>WAF Information: $(http_method) from $(src_ip) to $(dst_ip) : $(http_status)</description>
+  </rule>
+
+  <rule id="106000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">SD-WAN</field>
+    <description>SD-WAN Event</description>
+  </rule>
+
+  <rule id="106010" level="15">
+    <if_sid>106000</if_sid>
+    <field name="log_component">SLA</field>
+    <description>SD-WAN SLA Event</description>
+  </rule>
+
+  <rule id="106011" level="3">
+    <if_sid>106010</if_sid>
+    <field name="log_subtype">Information</field>
+    <description>SD-WAN SLA Information: SD-WAN Gateway: $(gw_name) $(sla_status)</description>
+  </rule>
+
+  <rule id="107000" level="15">
+    <if_sid>100000</if_sid>
+    <field name="log_type">Anti-Spam</field>
+    <description>Anti-Spam Event</description>
+  </rule>
+
+  <rule id="107010" level="15">
+    <if_sid>107000</if_sid>
+    <field name="log_component">SMTP</field>
+    <description>SMTP Anti-Spam Event</description>
+  </rule>
+
+  <rule id="107011" level="3">
+    <if_sid>107010</if_sid>
+    <field name="log_subtype">Allowed</field>
+    <description>Allowed mail "$(subject)" from $(sender) to $(recipient) | $(reason)</description>
+  </rule>
+
+</group>
+
+<!-- Regelvorlagen:
+
+  <rule id="100000" level="3">
+    <if_sid>100000</if_sid>
+    <field name=""></field>
+    <description></description>
+  </rule>
+
+-->
